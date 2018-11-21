@@ -1,9 +1,23 @@
-body {
+.login-body {
     background-color: #222D32;
 }
 
 .mt-150 {
     margin-top: 150px;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+    text-decoration: none;
+}
+
+ul,
+ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .panel {
@@ -18,4 +32,119 @@ body {
     line-height: 40px;
     text-align: center;
     color: white;
+}
+
+/* 左侧边栏 */
+.lt-aside {
+    width: 180px;
+    height: 100%;
+    background-color: #222D32;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+    transition: all 1s;
+}
+
+.lt-aside.hidemenu {
+    left: -180px;
+}
+
+.lt-aside .title a {
+    display: block;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    color: white;
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 30px;
+    background-color: #367FA9;
+}
+
+.lt-aside .user img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin: 0px auto;
+    display: block;
+}
+
+.lt-aside .user p {
+    font-size: 18px;
+    color: white;
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+}
+
+.lt-aside .nav ul li a {
+    height: 40px;
+    line-height: 40px;
+    color: white;
+    display: block;
+    padding-left: 40px;
+    border-left: 3px solid transparent;
+}
+
+.lt-aside .nav ul li a span {
+    margin-left: 5px;
+}
+
+.lt-aside .nav ul li a.current {
+    background-color: #1D1F21;
+    border-left: 3px solid #006699;
+}
+
+.lt-aside .nav ul li .first,
+.lt-aside .nav ul li .second {
+    padding-left: 60px;
+}
+
+.lt-aside .nav ul li .classify {
+    display: none;
+}
+
+/* 右边主体部分 */
+.lt-main {
+    padding-left: 180px;
+    height: 2000px;
+    padding-top: 50px;
+    transition: all 1s;
+}
+
+.lt-main .lt-topbar {
+    width: 100%;
+    height: 50px;
+    background-color: #3C8DBC;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-left: 180px;
+    transition: all 1s;
+}
+
+.lt-main .lt-topbar.hidemenu {
+    padding-left: 0;
+}
+
+.lt-main .lt-topbar a {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    font-size: 20px;
+    color: white;
+}
+
+.lt-main.hidemenu {
+    padding-left: 0;
+}
+
+.lt-main .container-fluid .breadcrumb {
+    margin-top: 15px;
+}
+
+.modal-body p {
+    color: red;
 }
