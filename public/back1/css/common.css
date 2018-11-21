@@ -148,3 +148,9 @@ ol {
 .modal-body p {
     color: red;
 }
+
+.container-fluid .chart .chart-1,
+.container-fluid .chart .chart-2 {
+    width: 48%;
+    height: 400px;
+}
