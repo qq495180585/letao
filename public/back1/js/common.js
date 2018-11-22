@@ -1,10 +1,14 @@
+$(document).ajaxStart(function () {
+    NProgress.start();
+})
+$(document).ajaxStop(function () {
+    NProgress.done();
+})
+
+
+
+
 $(function () {
-    $(document).ajaxStart(function () {
-        NProgress.start();
-    })
-    $(document).ajaxStop(function () {
-        NProgress.done();
-    })
     // 左侧二级切换功能
     $('.lt-aside .nav ul li .category').on('click', function () {
         $('.lt-aside .nav ul li .classify').stop().slideToggle();
