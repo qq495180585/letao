@@ -10,6 +10,10 @@
     margin-top: 50px;
 }
 
+.mt-15 {
+    margin-top: 15px;
+}
+
 .table.table-bordered td,
 .table.table-bordered th {
     text-align: center;

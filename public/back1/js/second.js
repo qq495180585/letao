@@ -17,8 +17,8 @@ $(function () {
                 $('tbody').html(str);
                 $("#paginator").bootstrapPaginator({
                     bootstrapMajorVersion: 3, //默认是2，如果是bootstrap3版本，这个参数必填
-                    currentPage: currentPage, //当前页
-                    totalPages: Math.ceil(res.total / size), //总页数
+                    currentPage: res.page, //当前页
+                    totalPages: Math.ceil(res.total / res.size), //总页数
                     onPageClicked: function (event, originalEvent, type, page) {
                         //为按钮绑定点击事件 page:当前点击的按钮值
                         currentPage = page;
@@ -48,65 +48,97 @@ $(function () {
                 $('.dropdown-menu').html(str);
             }
         })
-        // 1、获取id
-        $('.dropdown-menu').on('click', 'a', function () {
-            $('.txt').text($(this).text());
-            $('[name = "categoryId"]').val($(this).data('id'));
-            $("#form").data('bootstrapValidator').updateStatus('categoryId', 'VALID')
-        })
-        // 2、获取图片地址
-        $("#fileupload").fileupload({
-            dataType: "json",
-            //e：事件对象
-            //data：图片上传后的对象，通过data.result.picAddr可以获取上传后的图片地址
-            done: function (e, data) {
-                console.log(data);
-                $('#img').attr('src', data.result.picAddr);
-                $('[name = "brandLogo"]').val(data.result.picAddr);
-                $("#form").data('bootstrapValidator').updateStatus('brandLogo', 'VALID')
-            }
-        });
+
+    })
+    // 1、获取id
+    $('.dropdown-menu').on('click', 'a', function () {
+        $('.txt').text($(this).text());
+        $('[name = "categoryId"]').val($(this).data('id'));
+        $("#form").data('bootstrapValidator').updateStatus('categoryId', 'VALID')
+    })
+    // 2、获取图片地址
+    $("#fileupload").fileupload({
+        dataType: "json",
+        //e：事件对象
+        //data：图片上传后的对象，通过data.result.picAddr可以获取上传后的图片地址
+        done: function (e, data) {
+            console.log(data);
+            $('#img').attr('src', data.result.picAddr);
+            $('[name = "brandLogo"]').val(data.result.picAddr);
+            $("#form").data('bootstrapValidator').updateStatus('brandLogo', 'VALID')
+        }
+    });
 
 
-        // 3、表单校验
-        $('#form').bootstrapValidator({
-            excluded: [],
-            //2. 指定校验时的图标显示，默认是bootstrap风格
-            feedbackIcons: {
-                valid: 'glyphicon glyphicon-ok',
-                invalid: 'glyphicon glyphicon-remove',
-                validating: 'glyphicon glyphicon-refresh'
+    // 3、表单校验
+    $('#form').bootstrapValidator({
+        excluded: [],
+        //2. 指定校验时的图标显示，默认是bootstrap风格
+        feedbackIcons: {
+            valid: 'glyphicon glyphicon-ok',
+            invalid: 'glyphicon glyphicon-remove',
+            validating: 'glyphicon glyphicon-refresh'
+        },
+
+        //3. 指定校验字段
+        fields: {
+            //校验用户名，对应name表单的name属性
+            categoryId: {
+                validators: {
+                    //不能为空
+                    notEmpty: {
+                        message: '请选择一级分类'
+                    },
+                }
             },
+            brandLogo: {
+                validators: {
+                    //不能为空
+                    notEmpty: {
+                        message: '请选择图片'
+                    },
+                }
+            },
+            brandName: {
+                validators: {
+                    //不能为空
+                    notEmpty: {
+                        message: '请选择二级分类'
+                    },
+                }
+            },
+        }
 
-            //3. 指定校验字段
-            fields: {
-                //校验用户名，对应name表单的name属性
-                categoryId: {
-                    validators: {
-                        //不能为空
-                        notEmpty: {
-                            message: '请选择一级分类'
-                        },
-                    }
-                },
-                brandLogo: {
-                    validators: {
-                        //不能为空
-                        notEmpty: {
-                            message: '请选择图片'
-                        },
-                    }
-                },
-                brandName: {
-                    validators: {
-                        //不能为空
-                        notEmpty: {
-                            message: '请选择二级分类'
-                        },
-                    }
-                },
+    });
+
+    // // 阻止表单，用ajax提交
+    $('#form').on("success.form.bv", function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            type: "post",
+            url: "/category/addSecondCategory",
+            data: $('#form').serialize(),
+            dataType: "json",
+            success: function (info) {
+                console.log(info);
+                console.log(123);
+
+                if (info.success) {
+                    // 添加成功
+                    $('#secondModal').modal("hide");
+                    // 重新更新第一页
+                    currentPage = 1;
+                    render();
+
+                    // 重置表单内容和状态
+                    $('#form').data("bootstrapValidator").resetForm(true);
+
+                    // 由于下拉框 和 图片, 不是表单元素, 需要手动重置
+                    $('.dropdown-toggle .txt').text("请选择一级分类"); // 重置按钮文本
+                    $('#img').attr("src", "./images/none.png");
+                }
             }
-
-        });
+        })
     })
 })
